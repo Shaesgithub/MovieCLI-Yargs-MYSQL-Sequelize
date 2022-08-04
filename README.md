@@ -1,1 +1,1 @@
-# m39Sequelize-Yargs
+# MovieCLI with Yargs, MYSQL and Sequelize

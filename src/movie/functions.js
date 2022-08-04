@@ -1,63 +1,75 @@
 const Movie = require("./table");
 
-exports.createMovie = async (movieObj) => { // node src/app.js --create --title "" --actor ""
-    try {
 
-        // Create movie
-        const newMovie = await Movie.create(movieObj);
-        console.log(
-            `Successfuly added ${newMovie.dataValues.title} and ${newMovie.dataValues.actor} to db`
-          );
+// CREATE
+// node src/app.js --create --title "required" --actor ""
+exports.createMovie = async (movieObj) => {
+  
+  try {
 
-    } catch (error) {
+    const newMovie = await Movie.create(movieObj);
+    console.log(newMovie);
+    console.log(`Successfuly added ${newMovie.dataValues.title} and ${newMovie.dataValues.actor} to db`);
 
-        console.log(error);
-    }
+  } catch (error) {
+
+      console.log(error);
+  }
 };
 
-exports.listMovies = async ( ) => { // node src/app.js --read
-    try {
+// READ ALL
+// node src/app.js --read
+exports.readMovies = async ( ) => { 
 
-      // Find all movies
-      const movies = await Movie.findAll();
+  try {
 
-      for (let x = 0; x < movies.length; x++) {
+    const listMovies = await Movie.findAll();
+    console.log(listMovies);
 
-        console.log(movies[x].dataValues.title, movies[x].dataValues.actor);
-        
-      }
+  } catch (error) {
 
-    } catch (error) {
+    console.log(error);
+  }
 
+};
+
+
+// UPDATE
+// node src/app.js --update --title "find title" --actor "update actor" 
+exports.updateMovie = async (yargsObj, findObj) => {
+
+  try {
+
+    const updateMovies = await Movie.update ({ actor: yargsObj.actor}, {where: { title: findObj.title }
+      });
+
+        console.log(`Successfuly changed ${findObj.title}'s actor to ${yargsObj.actor}`);
+
+  } catch (error) {
       console.log(error);
-    }
-  };
-
-  exports.updateMovie = async (yargsObj, movieObj) => { 
-    try {
-        const updateMovie = await Movie.update ({ movieObj }, {
-            where: { title: yargsObj.title, actor: yargsObj.actor }
-        });
-        console.log(movieObj);
-    } catch (error) {
-        console.log(error);
-    }
+  }
 }; 
 
-  exports.deleteMovie = async (searchObj) => { // node src/app.js --delete --title "old title"
-    try {
-      //delete movie
-      const deleteOne = await Movie.destroy({ where: searchObj });
-      if (deleteOne > 0) {
 
-        console.log("Delete Movie Successful");
 
-      } else {
-        
-        console.log("Delete Movie Unsuccessful");
-      }
-    } catch (error) {
 
-      console.log(error);
+// DELETE
+// node src/app.js --delete --title "content"
+exports.deleteMovie = async (yargsObj) => {
+  
+  try {
+    
+    const delMovie = await Movie.destroy({ where: { title: yargsObj.title }});
+    if (delMovie > 0) {
+
+      console.log("Delete Movie Successful");
+
+    } else {
+      
+      console.log("Delete Movie Unsuccessful");
     }
-  };
+  } catch (error) {
+
+    console.log(error);
+  }
+};
